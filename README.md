@@ -5,15 +5,23 @@
 
 #### 移植说明
 移植特别简单，flow_def.h有一个全局变量：
-`extern unsigned long flow_tick;`
+```
+extern unsigned long flow_tick;
+```
+
 把这个变量放在你的某个硬件中断里去，这个硬件中断一定要是一直运行的，推荐RTC半秒中断，或者ststick中断都可以。
 
 然后在flow.h里的第一行有个宏
-`#define FL_HARD_TICK        (500)                 /* 系统硬件中断一次所需要的时间，单位ms */`
+```
+#define FL_HARD_TICK        (500)                 /* 系统硬件中断一次所需要的时间，单位ms */
+```
+
 把这里的值改成你的硬件中断一次所需的时间，单位是毫秒，比如你的flow_tick放在了一个500ms中断一次的rtc里，那么这里的宏FL_HARD_TICK的值就是500，具体中断设为多少取决于你的系统最短一次的延时的时间。
 
 假如我的最短延时需求是100ms，那么我就得给个100ms中断一次的硬件中断源，宏FL_HARD_TICK的值就是100，我就可以这样使用：
-`FL_LOCK_DELAY(fl, FL_CLOCK_SEC /10);`
+```
+FL_LOCK_DELAY(fl, FL_CLOCK_SEC /10);
+```
 来延时100ms。
 
 #### 使用说明
@@ -233,6 +241,6 @@ FL_LOCK_DELAY(fl, FL_CLOCK_SEC * 1);
 ```
 FL_LOCK_WAIT(fl, judge);
 ```
-当里面的judge为假时线程就一直锁住在这一行语句，当judge为真时就可以往下执行啦。同理可以完成很多其他的神奇功能，让你的cpu再也不空转啦。。。
+当里面的judge为假时线程就一直锁住在这一行语句，当judge为真时就可以往下执行啦。同理可以完成很多其他的神奇功能，让你的cpu再也不空转啦，具体请看flow.h文件。。。。
 
 这个版本暂时先写这么多，先看看example.c。
