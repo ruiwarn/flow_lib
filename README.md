@@ -54,12 +54,12 @@ FL_LOCK_DELAY(fl, FL_CLOCK_SEC /10);
 #define FL_INIT(fl)                                     FLOW_INIT(fl)
 
 /**
- * 如果函数是一个flow进程，那么必须放在函数前面
+ * flow头，必须放在函数内的最前面
  */
 #define FL_HEAD(fl)                                     FLOW_HEAD(fl)
 
 /**
- * 如果函数是一个flow进程，那么必须放在函数最后面
+ * flow尾，必须放在函数内的最后面
  */
 #define FL_TAIL(fl)                                     FLOW_TAIL(fl)
 
@@ -74,12 +74,12 @@ FL_LOCK_DELAY(fl, FL_CLOCK_SEC /10);
 #define FL_LOCK_WHILE(fl, judge)                        FLOW_LOCK_WHILE(fl, judge)
 
 /**
- * 如果judge为真，就一直给进程加锁，加锁期间一直放开cpu给其他进程使用
+ * 退出该进程
  */
 #define FL_EXIT(fl)                                     FLOW_EXIT(fl)
 
 /**
- * 无条件锁住进程一次
+ * 无条件锁住进程一次，下次进来再接着往下运行
  */
 #define FL_LOCK_ONCE(fl)                                FLOW_LOCK_ONCE(fl)
 
@@ -94,12 +94,12 @@ FL_LOCK_DELAY(fl, FL_CLOCK_SEC /10);
 #define FL_WAIT_CHILD(fl, cfl, process)                 FLOW_WAIT_CHILD_PROCESS_END(fl, cfl, process)
 
 /**
- * 给进程加锁time的时长，加锁期间一直放开cpu给其他进程使用，time如果用FL_CLOCK_SEC来乘，那么time的单位就是s
+ * 给进程加锁，时长为time，加锁期间一直放开cpu给其他进程使用，time如果用FL_CLOCK_SEC来乘，那么time的单位就是s
  */
 #define FL_LOCK_DELAY(fl,time)                          FLOW_LOCK_DELAY(fl,time)
 
 /**
- * 给进程加锁time的时长，期间如果judge为真，就解锁进程
+ * 给进程加锁，时长为time，延时期间如果judge为真，就直接解锁进程
  */
 #define FL_LOCK_DELAY_OR_WAIT(fl,judge,time)            FLOW_LOCK_DELAY_OR_WAIT(fl,judge,time)
 
