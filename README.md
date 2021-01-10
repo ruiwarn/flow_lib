@@ -1,7 +1,7 @@
 # flow_lib
 
 #### 介绍
-适用于嵌入式单片机的裸机程序微库，只占用你的rom 6个字节，是的，6个字节。颠覆式的设计思维，让你写代码的时候像flow(流水)一样丝滑，让你永远不用在为delay时cpu空转而烦恼，附加的超轻便的软件定时器让你轻松实现各种定时需求，令还有信号量的配方，让你任务间的同步像诗一样写意，并且能让你逻辑程序效率提升百倍以上。
+适用于嵌入式单片机的裸机程序微库，只占用你的rom 6个字节，是的，6个字节。颠覆式的设计思维，让你写代码的时候像flow(流水)一样丝滑，让你永远不用在为delay时cpu空转而烦恼，附加的超轻便的软件定时器让你轻松实现各种定时需求，令还有信号量的配方，让你任务间的同步像诗一样写意，并且能让你裸机程序效率提升百倍以上。
 
 #### 移植说明
 移植特别简单，flow_def.h有一个全局变量：
@@ -194,13 +194,12 @@ char led_flash(struct flow *fl)
 ```
 看起来像不像个进程？其实也有点操作系统的样子了。。。
 
-光有这个函数也不行，还得进行一些额外的操作，以下一一说明：
-1，初始化一个struct flow变量给这个函数使用
-2，把它放在main函数的while循环里
+光有这个函数也不行，还得进行一些额外的操作
+
 比如：
 
 ```
-static struct flow fl_led;
+static struct flow fl_led; /* 1，定义一个struct flow变量给这个函数使用 */
 
 static char led_flash(struct flow *fl)
 {
@@ -217,14 +216,23 @@ static char led_flash(struct flow *fl)
 
 int main(void)
 {
-    FL_INIT(&fl_led);
+    FL_INIT(&fl_led);  /* 2，初始化struct flow变量 */
     while(1)
     {
-        led_flash(&fl_led);
+        led_flash(&fl_led); /* 3，把led_flash进程放在main函数的while循环里 */
         ...
     }
     return 0;
 }
 ```
+经过以上3步，就可以实现进程之间的切换啦。然后想根据某个条件来锁住线程释放CPU的话，可以把里面的
+```
+FL_LOCK_DELAY(fl, FL_CLOCK_SEC * 1);
+```
+换成
+```
+FL_LOCK_WAIT(fl, judge);
+```
+当里面的judge为假时线程就一直锁住在这一行语句，当judge为真时就可以往下执行啦。同理可以完成很多其他的神奇功能，让你的cpu再也不空转啦。。。
 
 这个版本暂时先写这么多，先看看example.c。
