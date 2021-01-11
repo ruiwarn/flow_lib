@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2018
+ * Copyright (c) 2006-2021
  *
  * SPDX-License-Identifier:
  *
@@ -86,7 +86,7 @@
 #define FL_LOCK_WAIT_SEM(f, sem)                        FLOW_LOCK_WAIT_SEM(f, sem)
 
 /**
- * 给进程加锁，直到有信号或者超时，此处time可以为变量，其他的接口处time必须是常数
+ * 给进程加锁，直到有信号或者超时，此处time可以为常数或者变量，其他的接口处time必须是常数
  */
 #define FL_LOCK_WAIT_SEM_OR_TIMEOUT(fl, sem, time)      FLOW_LOCK_WAIT_SEM_OR_TIMEOUT(fl, sem, time)
 
@@ -117,7 +117,7 @@ char fl_timer_timeout(struct flow_timer *t);
 
 /**
  * 检测一个软件定时器还剩多少时间超时，单位为硬件tick，比如硬件tick 500ms中断一次，那么
- * 返回的时间单位就是500ms
+ * 返回的剩余时间就是500ms*n
  */
 unsigned long fl_hour_much_time(struct flow_timer *t);
 
