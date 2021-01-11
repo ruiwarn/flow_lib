@@ -17,7 +17,7 @@
 #define FLOW_END     (3)
 
 struct flow {
-    unsigned short line;
+    unsigned long line;
     unsigned long time;
 };
 
@@ -27,7 +27,8 @@ struct flow_timer {
 };
 
 struct flow_sem {
-    unsigned short count;
+    unsigned long count;
+    unsigned long time;
 };
 
 extern unsigned long flow_tick;

@@ -32,3 +32,14 @@ char fl_timer_timeout(struct flow_timer *t)
 {
     return ((flow_tick - t->start) >= t->interval) ? 1 : 0;
 }
+
+unsigned long fl_hour_much_time(struct flow_timer *t)
+{
+    unsigned long time_len = t->start + t->interval;
+
+    if (time_len >= flow_tick)
+        return (time_len - flow_tick);
+
+    else
+        return 0;
+}

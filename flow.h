@@ -65,11 +65,13 @@
 
 /**
  * 给进程加锁，时长为time，加锁期间一直放开cpu给其他进程使用，time如果用FL_CLOCK_SEC来乘，那么time的单位就是s
+ * 此处time必须是常数
  */
 #define FL_LOCK_DELAY(fl,time)                          FLOW_LOCK_DELAY(fl,time)
 
 /**
  * 给进程加锁，时长为time，延时期间如果judge为真，就直接解锁进程
+ * 此处time必须是常数
  */
 #define FL_LOCK_DELAY_OR_WAIT(fl,judge,time)            FLOW_LOCK_DELAY_OR_WAIT(fl,judge,time)
 
@@ -84,7 +86,7 @@
 #define FL_LOCK_WAIT_SEM(f, sem)                        FLOW_LOCK_WAIT_SEM(f, sem)
 
 /**
- * 给进程加锁，直到有信号或者超时
+ * 给进程加锁，直到有信号或者超时，此处time可以为变量，其他的接口处time必须是常数
  */
 #define FL_LOCK_WAIT_SEM_OR_TIMEOUT(fl, sem, time)      FLOW_LOCK_WAIT_SEM_OR_TIMEOUT(fl, sem, time)
 
@@ -113,6 +115,10 @@ void fl_timer_restart(struct flow_timer *t);
  */
 char fl_timer_timeout(struct flow_timer *t);
 
-
+/**
+ * 检测一个软件定时器还剩多少时间超时，单位为硬件tick，比如硬件tick 500ms中断一次，那么
+ * 返回的时间单位就是500ms
+ */
+unsigned long fl_hour_much_time(struct flow_timer *t);
 
 #endif /* __FLOW_ */

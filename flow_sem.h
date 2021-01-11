@@ -26,8 +26,9 @@ FLOW_LOCK_WAIT(f, (s)->count > 0);\
 #define FLOW_LOCK_WAIT_SEM_OR_TIMEOUT(f, s, t) \
 do{\
 (f)->time=flow_tick;\
-FLOW_LOCK_WAIT(f, (((s)->count>0)||((flow_tick-(f)->time)>=(t))));\
-if(((s)->count>0)&&((flow_tick-(f)->time)<(t))) --(s)->count;\
+(s)->time=(t);\
+FLOW_LOCK_WAIT(f, (((s)->count>0)||((flow_tick-(f)->time)>=((s)->time))));\
+if(((s)->count>0)&&((flow_tick-(f)->time)<((s)->time))) --(s)->count;\
 }while(0)
 
 #define FLOW_SEM_RELEASE(s) ++(s)->count
