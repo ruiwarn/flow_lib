@@ -218,6 +218,8 @@ static struct flow fl_led; /* 1，定义一个struct flow变量给这个函数�
 static char led_flash(struct flow *fl)
 {
     FL_HEAD(fl);
+    led_init();  /* 这里还能解决你的初始化问题，这里的函数只会在开机时运行一次，以后永远不会运行。注意：如果放在FL_HEAD(fl)前面，那么就是每次轮到这个进程运行时就会 
+                    运行一次，总之很灵活 */
     while(1)
     {
         FL_LOCK_DELAY(fl, FL_CLOCK_SEC * 1);
