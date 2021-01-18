@@ -17,8 +17,7 @@
 #define FLOW_INIT(f) ((f)->line=0)
 
 #define FLOW_HEAD(f) {\
-char lock_once_flag=0;\
-if (lock_once_flag) {;}\
+volatile char lock_once_flag=0;\
 switch((f)->line) { case 0:
 
 #define FLOW_TAIL(f) };\

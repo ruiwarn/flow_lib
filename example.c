@@ -17,11 +17,11 @@ static struct flow fl_led;
 static char led_flash(struct flow *fl)
 {
     FL_HEAD(fl);
-    while(1)
+    for(;;)
     {
-        FL_LOCK_DELAY(fl, FL_CLOCK_SEC * 1); /* 延时一秒 */
+        FL_LOCK_DELAY(fl, FL_CLOCK_SEC * 1U); /* 延时一秒 */
         led_open();
-        FL_LOCK_DELAY(fl, FL_CLOCK_SEC * 1); /* 延时一秒 */
+        FL_LOCK_DELAY(fl, FL_CLOCK_SEC * 1U); /* 延时一秒 */
         led_close();
     }
     FL_TAIL(fl);
@@ -30,7 +30,7 @@ static char led_flash(struct flow *fl)
 int main(void)
 {
     FL_INIT(&fl_led);
-    while(1)
+    for(;;)
     {
         led_flash(&fl_led);
         //other_process();

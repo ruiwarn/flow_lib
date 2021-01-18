@@ -28,18 +28,19 @@ void fl_timer_restart(struct flow_timer *t)
     t->start = flow_tick;
 }
 
-char fl_timer_timeout(struct flow_timer *t)
+unsigned char fl_timer_timeout(struct flow_timer *t)
 {
-    return ((flow_tick - t->start) >= t->interval) ? 1 : 0;
+    return ((flow_tick - t->start) >= t->interval) ? 1U : 0U;
 }
 
 unsigned long fl_hour_much_time(struct flow_timer *t)
 {
     unsigned long time_len = t->start + t->interval;
 
-    if (time_len >= flow_tick)
+    if (time_len >= flow_tick) {
         return (time_len - flow_tick);
 
-    else
-        return 0;
+    } else {
+        return 0U;
+    }
 }
